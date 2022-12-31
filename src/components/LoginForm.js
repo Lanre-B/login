@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 function LoginForm() {
@@ -13,7 +13,6 @@ function LoginForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const account = user.find((user) => user.email === email)
-        // console.log(account, account.name)
         if (account && (password === account.password)) {
             localStorage.setItem('authenticated', true);
             navigate("/", {state: {name: account.name}})

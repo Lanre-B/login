@@ -2,12 +2,21 @@ import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 
 function Dashboard() {
+
     const nav = useNavigate();
     const location = useLocation()
     const [greeting, setGreeting] = useState("")
+    const [personName, setPersonName] = useState("")
+    const d = new Date()
+    const hour = d.getHours()
     useEffect(() => {
-        const d = new Date()
-        const hour = d.getHours()
+        if (!localStorage.getItem("authenticated")) {
+            nav("/login");
+        } else {
+            setPersonName(location.state.name)
+        }
+    }, []);
+    useEffect(() => {
         if (hour < 12) {
             setGreeting("morning")
         } else if (hour < 18) {
@@ -15,18 +24,13 @@ function Dashboard() {
         } else {
             setGreeting("evening")
         }
-    }, [])
-
-    useEffect(() => {
-        if (!localStorage.getItem("authenticated")) {
-            nav("/login");
-        }
     }, []);
 
 
     return (
         <div>
-            <p>Good {greeting} {location.state.name} and welcome to your Dashboard </p>
+            <p>Good {greeting} {personName.charAt(0).toUpperCase() + personName.slice(1)} and welcome to your
+                Dashboard </p>
         </div>
     );
 }
